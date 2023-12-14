@@ -8,17 +8,8 @@ export RUNNER_TOKEN=$(echo $response | jq .token --raw-output)
 
 echo "Runner registration token: $RUNNER_TOKEN"
 
-./config.sh \
-    --name $(hostname) \
-    --token $RUNNER_TOKEN \
-    --url https://github.com/$OWNER/$REPO \
-    --work "/work" \
-    --unattended \
-    --replace
-
-remove() {
-    ./config.sh remove --unattended --token "${RUNNER_TOKEN}"
-}
+# cd /home/runner/actions-runner
+./config.sh --url https://github.com/$OWNER/$REPO --token $RUNNER_TOKEN --name $(hostname)
 
 trap 'remove; exit 130' INT
 trap 'remove; exit 143' TERM
